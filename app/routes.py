@@ -94,7 +94,11 @@ def register_routes(app):
         data = request.get_json()
         if data is None:
             return jsonify({'message': 'Invalid request body'}), 400
-        character.data = data
+    
+        for key, value in data.items():
+            if hasattr(character, key):
+                setattr(character, key, value)
+    
         db.session.commit()
         return jsonify({'message': 'Character sheet updated'}), 200
     
